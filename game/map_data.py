@@ -1,0 +1,22 @@
+SCENE_TEXT = {
+    (1, 1): "You are on a sandy beach. You see ocean to the south and a wall of rock to the west.",
+    (1, 2): "You are on a sandy beach. You see a ship floating in the water to the south. a pirate calls out from the deck.",
+    (1, 3): "You are on a sandy beach. You see ocean to the south.",
+    (1, 4): "You are on a sandy beach. You see ocean to the south.",
+    (1, 5): "You are on a sandy beach. You see ocean to the south and a wall of rock to the east.",
+    (2, 1): "You are on some grassy plains. You see a beach to the south and a wall of rock to the west.",
+    (2, 2): "You are on some grassy plains. You see a beach to the south.",
+    (2, 3): "You are in a forest. You see a beach to the south.",
+    (2, 4): "You are in a forest. You see a beach to the south.",
+    (2, 5): "You are in a forest. You see a beach to the south and a wall of rock to the east.",
+    (3, 1): "You are on some grassy plains. You see a wall of rock to the west and more plains to the north, east and south",
+    (3, 2): "You are on some grassy plains. You see a few trees creeping in from the east.",
+    (3, 3): "You are in a dense forest.",
+    (3, 4): "You are in a dense forest.",
+    (3, 5): "You are in a dense forest. You see a wall of rock to the east.",
+    (4, 1): "You are on some grassy plains. A massive locked door sits in front of the wall to the north. You see a wall of rock to the west.",
+    (4, 2): "You are on some grassy plains. You see some forest creeping in from the east and a wall of rock to the north.",
+    (4, 3): "You are in a dense forest. You see a wall of rock to the north.",
+    (4, 4): "You arrive at a small clearing in the forest next to a still lake. You see something glinting at the bottom of the lake. You see a wall of rock to the north.",
+    (4, 5): "You are in a dense forest. You see walls of rock to the north and east."
+}

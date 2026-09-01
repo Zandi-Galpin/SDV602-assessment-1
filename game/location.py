@@ -1,14 +1,18 @@
+# game/location.py
 class Location:
-    def __init__(self, name, story, north, south, east, west, colour, item, image=None):
+    def __init__(self, name, story, north=None, south=None, 
+                 east=None, west=None, item=None, image=None,
+                 locked=False, locked_message=None):
         self.name = name
         self.story = story
         self.north = north
         self.south = south
         self.east = east
         self.west = west
-        self.colour = colour
         self.item = item
-        self.image = image or f'assets/images/{name.lower()}.png'
+        self.image = image or f'assets/images/{name}.png'
+        self.locked = locked
+        self.locked_message = locked_message or "It's locked. You'll need a key."
 
     def __getitem__(self, attribute):
         match attribute:
