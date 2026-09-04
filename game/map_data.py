@@ -56,3 +56,25 @@ def build_grid_locations():
     door.image = "assets/images/row4column1closed.png"
 
     return locations
+
+
+def build_corridor_locations():
+    #the 3 scenes after the door is unlocked.
+    return {
+        "row5column1": Location(
+            name="row5column1",
+            story="You enter the corridor. A golden path leads north.",
+            south="row4column1", north="row6column1",
+        ),
+        "row6column1": Location(
+            name="row6column1",
+            story="The corridor continues. Something huge blocks the path ahead.",
+            south="row5column1", north="row7column1",
+        ),
+        "row7column1": Location(
+            name="row7column1",
+            story="The corridor opens up and you see the pile of peas you have searched for.\n"
+                  "Beyond the peas you see rolling fields. You are free.",
+            south="row6column1", north=None,
+        ),
+    }
