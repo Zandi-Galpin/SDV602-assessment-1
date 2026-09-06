@@ -1,4 +1,4 @@
-from inventory import Inventory
+from game.inventory import Inventory
 from game.item import Item
 from game.player import Player
 from game.location import Location
@@ -10,16 +10,12 @@ class Game:
         self.player = player
         self.inventory = Inventory()
 
-        self.current_location = '3-1'   #spawn: row 3, col 1
+        self.current_location: str = 'row3column1'   #spawn: row 3, col 1
         self.locations = {**build_grid_locations(), **build_corridor_locations()}
 
 
     def get_current_location(self):
-        """Return the story text for the current `game_state`.
-
-        Kept as a separate function so the GUI layout can call it when
-        building the initial window contents.
-        """
+        """Return the story text for the current `game_state`."""
         return self.locations[self.current_location]
 
     def move(self, location: Location):
@@ -33,8 +29,12 @@ class Game:
 
     def validate_move(self, direction: str):
         current_location: Location = self.get_current_location()
-
         destination = current_location.get_direction(direction)
+
+        if direction == 'north' and current_location.locked:
+            return current_location.locked_message + '\n' + \
+                current_location.story
+
         if destination:
             proposed_location: Location = self.locations[destination]
             return self.move(proposed_location)
