@@ -1,12 +1,12 @@
 import FreeSimpleGUI as sg
-from game import Game
+from game.game import Game
 
 
 class GUI():
     def __init__(self, game: Game):
         self.game = game
         self.window = self.create_window(game)
-        self.valid_directions = ['south', 'north']
+        self.valid_directions = ['south', 'north', 'east', 'west']
 
     def create_window(self, game):
         """Create and return the main application window.
@@ -24,18 +24,10 @@ class GUI():
         command_col = sg.Column([prompt_input, buttons],
                                 element_justification='r')
 
-        colour = game.get_current_location().colour
-
-        graph = sg.Graph(
-            canvas_size=(100, 100),
-            graph_bottom_left=(0, 0),
-            graph_top_right=(100, 100),
-            key='-CANV-',
-            background_color=colour,
-        )
+        img = sg.Image(filename=game.get_current_location().image, key='-IMG-')
 
         layout = [
-            [graph, sg.Text('HP: ' + str(game.player.health_current) + '/' + str(game.player.health_max) +
+            [img, sg.Text('HP: ' + str(game.player.health_current) + '/' + str(game.player.health_max) +
                             ' DMG: ' + str(game.player.damage) + ' BLOCK: ' + str(game.player.block) +
                             '\n' +
                             str(game.get_current_location().story), size=(
@@ -58,53 +50,6 @@ class GUI():
 
                     command_complete = True
 
-                # elif 'search' in values['-IN-'].lower():
-                #     item = game.get_current_location().item
-
-                #     if game.inventory.add_item(item):
-                #         current_story = 'You found a ' + item.name + \
-                #             '!\n' + game.get_current_location().story
-
-                #     else:
-                #         current_story = 'You already found the ' + \
-                #             item.name + '.\n' + game.get_current_location().story
-                #     command_success = True
-
-                # use or equip an item
-                # elif 'use ' in values['-IN-'].lower():
-                #     use_item_name = values['-IN-'].lower().replace('use ',
-                #                                                    '').strip()
-                #     current_story = ''
-                #     item = inventory[use_item_name]
-                #     if item['has_item']:
-                #         if 'equipped' in item:
-                #             if item['equipped']:
-                #                 item['equipped'] = False
-                #                 player['damage'] -= item['damage']
-                #                 player['block'] -= item['block']
-                #                 current_story = 'You unequipped ' + \
-                #                     item['name'] + '.\n'
-                #             else:
-                #                 item['equipped'] = True
-                #                 player['damage'] += item['damage']
-                #                 player['block'] += item['block']
-                #                 current_story = 'You equipped ' + \
-                #                     item['name'] + '.\n'
-                #         elif 'used' in item:
-                #             if not item['used']:
-                #                 item['used'] = True
-                #                 player['health_current'] += item['heal']
-                #                 if player['health_current'] > player['health_max']:
-                #                     player['health_current'] = player['health_max']
-                #                 current_story = 'You used ' + item['name'] + '.\n'
-                #             else:
-                #                 current_story = item['name'] + ' already used.\n'
-                #     else:
-                #         current_story = 'You do not have ' + use_item_name + '.\n'
-
-                #     current_story += game_places[game_state]['Story']
-                #     command_success = True
-
                 if command_complete:
                     self.window['-OUTPUT-'].update(
                         value=str(self.game.player) +
@@ -113,9 +58,9 @@ class GUI():
                     self.window['-IN-'].update(value='')
                     output_message = ''
 
-                # Update the Graph's background colour to reflect the new location.
-                colour = self.game.get_current_location().colour
-                self.window['-CANV-'].update(background_color=colour)
+                # Update the image to reflect the new location.
+                self.window['-IMG-'].update(filename=self.game.get_current_location().image)
+
 
             elif event == 'Exit' or event is None or event == sg.WIN_CLOSED:
                 break
