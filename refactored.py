@@ -1,6 +1,6 @@
-import FreeSimpleGUI as sg
 from game.player import Player
 from game.game import Game
+from game.command_parser import CommandParser
 from gui import GUI
 
 HEADLESS = True
@@ -10,32 +10,33 @@ if __name__ == "__main__":
         health_current=50
     )
     game = Game(player)
+    parser = CommandParser(game)
 
     if not HEADLESS:
         gui = GUI(game)
         gui.run()
 
     else:
+        test_commands = [
+            "move north",
+            "move north",
+            "move north",   #blocked (locked door)
+            "move south",
+            "move south",
+            "move south",
+            "attack goblin",
+            "equip sword",
+            "use health potion",
+            "move sideways",  #invalid direction
+            "adfasdfasd",          #invalid word
+        ]
+
         print(game.player)
         print(game.get_current_location().story)
         print('\n')
 
-        print(game.player)
-        print(game.validate_move("north"))
-        print('\n')
-
-        print(game.player)
-        print(game.validate_move("north"))
-        print('\n')
-
-        print(game.player)
-        print(game.validate_move("south"))
-        print('\n')
-
-        print(game.player)
-        print(game.validate_move("south"))
-        print('\n')
-
-        print(game.player)
-        print(game.validate_move("south"))
-        print('\n')
+        for command in test_commands:
+            print(game.player)
+            print(f"> {command}")
+            print(parser.execute(command))
+            print('\n')
