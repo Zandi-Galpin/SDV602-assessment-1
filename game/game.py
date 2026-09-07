@@ -41,3 +41,15 @@ class Game:
 
         return 'You can not go that way.\n' + \
             self.get_current_location().story
+
+    def handle_attack(self, enemy_name: str) -> str:
+        return (f"(not finished yet, target is {enemy_name} "
+            "\n" + self.get_current_location().story)
+
+    def handle_equip(self, item_name: str) -> str:
+        return (f"(not finished yet "
+                f"{item_name})\n" + self.get_current_location().story)
+
+    def handle_use(self, item_name: str) -> str:
+        return (f"(not finished yet "
+                f"{item_name})\n" + self.get_current_location().story)

@@ -1,6 +1,6 @@
 import FreeSimpleGUI as sg
-from player import Player
-from game import Game
+from game.player import Player
+from game.game import Game
 from gui import GUI
 
 HEADLESS = True
