@@ -47,9 +47,9 @@ class Game:
             "\n" + self.get_current_location().story)
 
     def handle_equip(self, item_name: str) -> str:
-        return (f"(not finished yet "
-                f"{item_name})\n" + self.get_current_location().story)
+        message = self.inventory.equip_item(item_name, self.player)
+        return message + '\n' + self.get_current_location().story
 
     def handle_use(self, item_name: str) -> str:
-        return (f"(not finished yet "
-                f"{item_name})\n" + self.get_current_location().story)
+        message = self.inventory.use_item(item_name, self.player)
+        return message + '\n' + self.get_current_location().story

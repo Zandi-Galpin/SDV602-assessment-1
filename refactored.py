@@ -2,6 +2,8 @@ from game.player import Player
 from game.game import Game
 from game.command_parser import CommandParser
 from gui import GUI
+from game.item import Item
+
 
 HEADLESS = True
 
@@ -17,18 +19,21 @@ if __name__ == "__main__":
         gui.run()
 
     else:
+        #add items the user would normally get from enemies
+        game.inventory.add_item(Item('sword', damage=5))
+        game.inventory.add_item(Item('health potion', heal=25))
+        game.inventory.add_gold(50)
+
         test_commands = [
-            "move north",
-            "move north",
-            "move north",   #blocked (locked door)
-            "move south",
-            "move south",
-            "move south",
-            "attack goblin",
             "equip sword",
+            "equip sword",          #unequip (toggled)
+            "equip shield",         #not in inventory
+            "attack goblin",     
             "use health potion",
-            "move sideways",  #invalid direction
-            "adfasdfasd",          #invalid word
+            "use health potion",    #already used
+            "use sword",            #not usable, only equippable
+            "move sideways",        #invalid direction
+            "adfasdfasd",           #invalid word
         ]
 
         print(game.player)
