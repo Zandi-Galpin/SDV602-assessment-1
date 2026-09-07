@@ -1,19 +1,16 @@
 import FreeSimpleGUI as sg
 from game.game import Game
+from game.command_parser import CommandParser
 
 
 class GUI():
     def __init__(self, game: Game):
         self.game = game
+        self.parser = CommandParser(game)
         self.window = self.create_window(game)
-        self.valid_directions = ['south', 'north', 'east', 'west']
 
     def create_window(self, game):
-        """Create and return the main application window.
-
-        The left area is a coloured `sg.Graph` element used to represent the current location.
-        The right area shows the description and a text input.
-        """
+        """Create and return the main application window."""
         sg.theme('Dark Blue 3')
 
         prompt_input = [
@@ -40,27 +37,14 @@ class GUI():
         while True:
             event, values = self.window.read()
             if event == 'Enter':
-                command_complete = False
-                output_message = self.game.get_current_location().story
+                raw_input = values['-IN-']
+                output_message = self.parser.execute(raw_input)
 
-                input = values['-IN-'].lower()
-
-                if input in self.valid_directions:
-                    output_message = self.game.validate_move(input)
-
-                    command_complete = True
-
-                if command_complete:
-                    self.window['-OUTPUT-'].update(
-                        value=str(self.game.player) +
-                        '\n' + output_message
-                    )
-                    self.window['-IN-'].update(value='')
-                    output_message = ''
-
-                # Update the image to reflect the new location.
+                self.window['-OUTPUT-'].update(
+                    value=str(self.game.player) + '\n' + output_message
+                )
+                self.window['-IN-'].update(value='')
                 self.window['-IMG-'].update(filename=self.game.get_current_location().image)
-
 
             elif event == 'Exit' or event is None or event == sg.WIN_CLOSED:
                 break
