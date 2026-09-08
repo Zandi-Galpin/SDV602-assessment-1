@@ -3,12 +3,14 @@ from game.player import Player
 from game.location import Location
 from game.map_data import build_grid_locations, build_corridor_locations
 from game.monster_fight import MonsterFight
+from game.status import Status
 
 class Game:
     def __init__(self, player: Player):
         self.player = player
         self.inventory = Inventory()
         self.monster_fight = MonsterFight()
+        self.status = Status(self.player)
 
         self.current_location: str = 'row3column1'   #spawn: row 3, col 1
         self.locations = {**build_grid_locations(), **build_corridor_locations()}
@@ -69,6 +71,7 @@ class Game:
                     self.inventory.add_item(drop)
             location.enemies.remove(target)
             self.monster_fight.end_battle()
+            messages.append(self.status.add_score(target.score, reason=target.name))
 
         return '\n'.join(messages) + '\n' + self.get_display_text()
 
@@ -76,7 +79,11 @@ class Game:
         if self.monster_fight.in_battle():
             return ("You can't equip items during battle.\n"
                     + self.get_display_text())
-        message = self.inventory.equip_item(item_name, self.player)
+
+        message, now_equipped = self.inventory.equip_item(item_name, self.player)
+        if now_equipped is not None:
+            self.status.record_equip(item_name, now_equipped)
+
         return message + '\n' + self.get_display_text()
 
     def handle_use(self, item_name: str) -> str:

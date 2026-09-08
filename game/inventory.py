@@ -39,23 +39,20 @@ class Inventory:
         return False
 
     def equip_item(self, item_name, player):
-        #equiping adjusts the users damage/block.
         item = self.find_item(item_name)
         if not item:
-            return f"You don't have {item_name}."
+            return f"You don't have {item_name}.", None
 
         if item.equipped:
             item.equipped = False
             player.damage -= item.damage
             player.block -= item.block
-            return f"You unequipped {item.name}, losing " + \
-                f"{item.damage} attack damage and {item.block} block"
+            return f"You unequipped {item.name}.", False
 
         item.equipped = True
         player.damage += item.damage
         player.block += item.block
-        return f"You equipped {item.name}, gaining " + \
-                f"{item.damage} attack damage and {item.block} block"
+        return f"You equipped {item.name}, gaining {item.damage} attack damage and {item.block} block.", True
 
     def use_item(self, item_name, player):
         #Uses a consumable (healing)
@@ -75,3 +72,4 @@ class Inventory:
         self.remove_item(item_name)
 
         return f"You used {item.name} and healed {healed} HP."
+    

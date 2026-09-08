@@ -41,7 +41,7 @@ class GUI():
                 output_message = self.parser.execute(raw_input)
 
                 self.window['-OUTPUT-'].update(
-                    value=str(self.game.player) + '\n' + output_message
+                    value=str(self.game.status.summary_line()) + '\n' + output_message
                 )
                 self.window['-IN-'].update(value='')
                 self.window['-IMG-'].update(filename=self.game.get_current_location().image)

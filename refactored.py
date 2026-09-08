@@ -43,12 +43,12 @@ if __name__ == "__main__":
             "move north",        #should work again after battle
         ]
 
-        print(game.player)
+        print(game.status.summary_line())
         print(game.get_current_location().story)
         print('\n')
 
         for command in test_commands:
-            print(game.player)
+            print(game.status.summary_line())
             print(f"> {command}")
             print(parser.execute(command))
             print('\n')
