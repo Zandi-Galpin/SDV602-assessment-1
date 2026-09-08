@@ -1,4 +1,6 @@
 from game.location import Location
+from game.enemy import Enemy
+from game.item import Item
 
 #set here in case map gets made bigger later.
 GRID_ROWS = 4
@@ -78,3 +80,16 @@ def build_corridor_locations():
             south="row6column1", north=None,
         ),
     }
+
+def populate_enemies(locations):
+    """put enemies on their scenes. Called after the grid is built."""
+    locations["row3column2"].enemies.append(
+        Enemy(
+            name="king goose",
+            health=20,
+            damage=15,
+            score=100,
+            presence_text="A massive king goose blocks the path. 'Your journey ends here.' he says coldly. (currently not in right position or has right health. testing)",
+            drops=[Item("crown"), Item("gold", amount=999)],
+        )
+    )

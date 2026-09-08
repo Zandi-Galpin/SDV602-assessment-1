@@ -32,3 +32,10 @@ class Location:
             if enemy.name.lower() == name:
                 return enemy
         return None
+
+    def get_full_story(self):
+        #Base story text plus a line for each currently alive enemy.
+        story = self.story
+        for enemy in self.enemies:
+            story += '\n' + enemy.presence_text
+        return story

@@ -7,7 +7,7 @@ from game.item import Item
 from game.enemy import Enemy
 
 
-HEADLESS = True
+HEADLESS = False
 
 if __name__ == "__main__":
     player = Player(

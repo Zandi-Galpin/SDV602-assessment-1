@@ -1,9 +1,10 @@
 from game.inventory import Inventory
 from game.player import Player
 from game.location import Location
-from game.map_data import build_grid_locations, build_corridor_locations
+from game.map_data import build_grid_locations, build_corridor_locations, populate_enemies
 from game.monster_fight import MonsterFight
 from game.status import Status
+
 
 class Game:
     def __init__(self, player: Player):
@@ -11,9 +12,10 @@ class Game:
         self.inventory = Inventory()
         self.monster_fight = MonsterFight()
         self.status = Status(self.player)
-
+        
         self.current_location: str = 'row3column1'   #spawn: row 3, col 1
         self.locations = {**build_grid_locations(), **build_corridor_locations()}
+        populate_enemies(self.locations)
 
 
     def get_current_location(self):
@@ -39,7 +41,7 @@ class Game:
 
         if direction == 'north' and current_location.locked:
             return current_location.locked_message + '\n' + \
-                current_location.story
+                current_location.get_full_story()
 
         if destination:
             proposed_location: Location = self.locations[destination]
@@ -97,4 +99,4 @@ class Game:
         if self.monster_fight.in_battle():
             enemy = self.monster_fight.current_enemy
             return f"You are fighting {enemy.name} ({enemy.health} HP remaining)."
-        return self.get_current_location().story
+        return self.get_current_location().get_full_story()
