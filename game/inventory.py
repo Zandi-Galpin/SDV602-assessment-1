@@ -55,7 +55,10 @@ class Inventory:
         return f"You equipped {item.name}, gaining {item.damage} attack damage and {item.block} block.", True
 
     def use_item(self, item_name, player):
-        #Uses a consumable (healing)
+        #Uses a consumable (healing or gold)
+        if item_name == 'gold':
+            return "There's nothing to use gold on here."#only falls through to this if the use case isnt "special"
+
         item = self.find_item(item_name)
         if not item:
             return f"You don't have {item_name}."

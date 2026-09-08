@@ -4,7 +4,7 @@ from game.location import Location
 from game.map_data import build_grid_locations, build_corridor_locations, populate_enemies
 from game.monster_fight import MonsterFight
 from game.status import Status
-
+from game.special_interactions import SPECIAL_INTERACTIONS
 
 class Game:
     def __init__(self, player: Player):
@@ -109,6 +109,14 @@ class Game:
         return message + '\n' + self.get_display_text()
 
     def handle_use(self, item_name: str) -> str:
+        location = self.get_current_location()
+        special = SPECIAL_INTERACTIONS.get((location.name, item_name))
+
+        if special:
+            result = special(self)
+            if result is not None:
+                return result + '\n' + self.get_display_text()
+            
         message = self.inventory.use_item(item_name, self.player)
         return message + '\n' + self.get_display_text()
 
