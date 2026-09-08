@@ -31,7 +31,7 @@ class GUI():
                 100, 4), font='Any 12', key='-OUTPUT-')],
             [command_col],
         ]
-        return sg.Window('Adventure Game', layout, size=(400, 200))
+        return sg.Window('Adventure Game', layout, resizable=True)
 
     def run(self):
         while True:
