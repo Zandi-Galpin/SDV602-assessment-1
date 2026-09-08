@@ -86,7 +86,7 @@ def populate_enemies(locations):
     locations["row3column2"].enemies.append(
         Enemy(
             name="king goose",
-            health=20,
+            health=200,
             damage=15,
             score=100,
             presence_text="A massive king goose blocks the path. 'Your journey ends here.' he says coldly. (currently not in right position or has right health. testing)",

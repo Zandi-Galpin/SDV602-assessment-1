@@ -22,6 +22,12 @@ class CommandParser:
         
         word, target = self.parse(raw_input)
 
+        if self.game.is_game_over():
+            if word == 'restart':
+                return self.game.restart()
+            return ("You were defeated. Type 'restart' to try again.")
+
+
         if word not in self.VALID_WORDS:
             return (f"'{raw_input}' is not a valid command.\n"
                     + self.game.get_display_text())

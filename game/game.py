@@ -8,7 +8,20 @@ from game.status import Status
 
 class Game:
     def __init__(self, player: Player):
+        self.starting_player_stats = {
+            'health_max': player.health_max,
+            'damage': player.damage,
+            'block': player.block,
+        }
         self.player = player
+        self.setup_new_game()
+
+    def setup_new_game(self):
+        """build or rebuild the game stuff. Used by __init__ and restart()."""
+        self.player.health_current = self.player.health_max
+        self.player.damage = self.starting_player_stats['damage']
+        self.player.block = self.starting_player_stats['block']
+
         self.inventory = Inventory()
         self.monster_fight = MonsterFight()
         self.status = Status(self.player)
@@ -17,6 +30,13 @@ class Game:
         self.locations = {**build_grid_locations(), **build_corridor_locations()}
         populate_enemies(self.locations)
 
+    def is_game_over(self) -> bool:
+        return not self.status.is_alive()
+
+    def restart(self) -> str:
+        self.setup_new_game()
+        return ("You wake up in a grassy plains. What a strange dream.\n"
+                + self.get_display_text())
 
     def get_current_location(self):
         """Return the story text for the current `game_state`."""
