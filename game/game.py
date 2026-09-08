@@ -25,12 +25,12 @@ class Game:
         move is not allowed.
         """
         self.current_location = location.name
-        return self.get_current_location().story
+        return self.get_display_text()
 
     def validate_move(self, direction: str):
         if self.monster_fight.in_battle():
             return ("You can't move while in battle!\n"
-                    + self.get_current_location().story)
+                    + self.get_display_text())
 
         current_location: Location = self.get_current_location()
         destination = current_location.get_direction(direction)
@@ -44,7 +44,7 @@ class Game:
             return self.move(proposed_location)
 
         return 'You can not go that way.\n' + \
-            self.get_current_location().story
+            self.get_display_text()
 
     def handle_attack(self, enemy_name: str) -> str:
         location = self.get_current_location()
@@ -52,11 +52,11 @@ class Game:
         if self.monster_fight.in_battle():
             target = self.monster_fight.current_enemy
             if target.name.lower() != enemy_name:
-                return (f"You're already fighting {target.name}.\n" + location.story)
+                return (f"You're already fighting {target.name}.\n" + self.get_display_text())
         else:
             target = location.get_enemy(enemy_name)
             if not target:
-                return f"There is no {enemy_name} here.\n" + location.story
+                return f"There is no {enemy_name} here.\n" + self.get_display_text()
             self.monster_fight.start_battle(target)
 
         messages, defeated = self.monster_fight.resolve_attack(self.player, target)
@@ -70,15 +70,24 @@ class Game:
             location.enemies.remove(target)
             self.monster_fight.end_battle()
 
-        return '\n'.join(messages) + '\n' + location.story
+        return '\n'.join(messages) + '\n' + self.get_display_text()
 
     def handle_equip(self, item_name: str) -> str:
         if self.monster_fight.in_battle():
             return ("You can't equip items during battle.\n"
-                    + self.get_current_location().story)
+                    + self.get_display_text())
         message = self.inventory.equip_item(item_name, self.player)
-        return message + '\n' + self.get_current_location().story
+        return message + '\n' + self.get_display_text()
 
     def handle_use(self, item_name: str) -> str:
         message = self.inventory.use_item(item_name, self.player)
-        return message + '\n' + self.get_current_location().story
+        return message + '\n' + self.get_display_text()
+
+    def get_display_text(self) -> str:
+        """The  status text shown after any command result.
+        Shows battle status while fighting, otherwise shows the location's story.
+        """
+        if self.monster_fight.in_battle():
+            enemy = self.monster_fight.current_enemy
+            return f"You are fighting {enemy.name} ({enemy.health} HP remaining)."
+        return self.get_current_location().story

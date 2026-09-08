@@ -24,7 +24,7 @@ class CommandParser:
 
         if word not in self.VALID_WORDS:
             return (f"'{raw_input}' is not a valid command.\n"
-                    + self.game.get_current_location().story)
+                    + self.game.get_display_text())
 
         match word:
             case 'move':
@@ -39,20 +39,20 @@ class CommandParser:
     def handle_move(self, target: str) -> str:
         if target not in self.VALID_DIRECTIONS:
             return (f"'{target}' is not a valid direction.\n"
-                    + self.game.get_current_location().story)
+                    + self.game.get_display_text())
         return self.game.validate_move(target)
 
     def handle_attack(self, target: str) -> str:
         if not target:
-            return "Attack what?\n" + self.game.get_current_location().story
+            return "Attack what?\n" + self.game.get_display_text()
         return self.game.handle_attack(target)
 
     def handle_equip(self, target: str) -> str:
         if not target:
-            return "Equip what?\n" + self.game.get_current_location().story
+            return "Equip what?\n" + self.game.get_display_text()
         return self.game.handle_equip(target)
 
     def handle_use(self, target: str) -> str:
         if not target:
-            return "Use what?\n" + self.game.get_current_location().story
+            return "Use what?\n" + self.game.get_display_text()
         return self.game.handle_use(target)
