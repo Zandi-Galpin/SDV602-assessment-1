@@ -4,6 +4,8 @@ from game.command_parser import CommandParser
 from gui import GUI
 from game.item import Item
 
+from game.enemy import Enemy
+
 
 HEADLESS = True
 
@@ -19,21 +21,26 @@ if __name__ == "__main__":
         gui.run()
 
     else:
-        #add items the user would normally get from enemies
         game.inventory.add_item(Item('sword', damage=5))
         game.inventory.add_item(Item('health potion', heal=25))
         game.inventory.add_gold(50)
 
+        # Test-only enemy placed at spawn — real placement happens later
+        test_goblin = Enemy(
+            name='goblin', health=12, damage=4,
+            drops=[Item('gold', amount=15)]
+        )
+        game.get_current_location().enemies.append(test_goblin)
+
         test_commands = [
             "equip sword",
-            "equip sword",          #unequip (toggled)
-            "equip shield",         #not in inventory
-            "attack goblin",     
-            "use health potion",
-            "use health potion",    #already used
-            "use sword",            #not usable, only equippable
-            "move sideways",        #invalid direction
-            "adfasdfasd",           #invalid word
+            "attack goblin",     #starts battle, first hit
+            "move north",        #blocked, in battle
+            "equip sword",       #blocked, in battle
+            "use health potion", #allowed in battle, doesn't end turn
+            "attack goblin",     #continue fight
+            "attack goblin",     #should defeat it 
+            "move north",        #should work again after battle
         ]
 
         print(game.player)

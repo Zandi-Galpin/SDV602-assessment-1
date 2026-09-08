@@ -1,14 +1,14 @@
 from game.inventory import Inventory
-from game.item import Item
 from game.player import Player
 from game.location import Location
 from game.map_data import build_grid_locations, build_corridor_locations
-
+from game.monster_fight import MonsterFight
 
 class Game:
     def __init__(self, player: Player):
         self.player = player
         self.inventory = Inventory()
+        self.monster_fight = MonsterFight()
 
         self.current_location: str = 'row3column1'   #spawn: row 3, col 1
         self.locations = {**build_grid_locations(), **build_corridor_locations()}
@@ -28,6 +28,10 @@ class Game:
         return self.get_current_location().story
 
     def validate_move(self, direction: str):
+        if self.monster_fight.in_battle():
+            return ("You can't move while in battle!\n"
+                    + self.get_current_location().story)
+
         current_location: Location = self.get_current_location()
         destination = current_location.get_direction(direction)
 
@@ -43,10 +47,35 @@ class Game:
             self.get_current_location().story
 
     def handle_attack(self, enemy_name: str) -> str:
-        return (f"(not finished yet, target is {enemy_name} "
-            "\n" + self.get_current_location().story)
+        location = self.get_current_location()
+
+        if self.monster_fight.in_battle():
+            target = self.monster_fight.current_enemy
+            if target.name.lower() != enemy_name:
+                return (f"You're already fighting {target.name}.\n" + location.story)
+        else:
+            target = location.get_enemy(enemy_name)
+            if not target:
+                return f"There is no {enemy_name} here.\n" + location.story
+            self.monster_fight.start_battle(target)
+
+        messages, defeated = self.monster_fight.resolve_attack(self.player, target)
+
+        if defeated:
+            for drop in target.drops:
+                if drop.name == 'gold':
+                    self.inventory.add_gold(drop.amount)
+                else:
+                    self.inventory.add_item(drop)
+            location.enemies.remove(target)
+            self.monster_fight.end_battle()
+
+        return '\n'.join(messages) + '\n' + location.story
 
     def handle_equip(self, item_name: str) -> str:
+        if self.monster_fight.in_battle():
+            return ("You can't equip items during battle.\n"
+                    + self.get_current_location().story)
         message = self.inventory.equip_item(item_name, self.player)
         return message + '\n' + self.get_current_location().story
 

@@ -26,3 +26,9 @@ class Location:
                 return self.east
             case 'west':
                 return self.west
+
+    def get_enemy(self, name):
+        for enemy in self.enemies:
+            if enemy.name.lower() == name:
+                return enemy
+        return None
