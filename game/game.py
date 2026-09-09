@@ -96,14 +96,21 @@ class Game:
         messages, defeated = self.monster_fight.resolve_attack(self.player, target)
 
         if defeated:
+            drop_messages = []
             for drop in target.drops:
                 if drop.name == 'gold':
                     self.inventory.add_gold(drop.amount)
+                    drop_messages.append(f"You found {drop.amount} gold!")
                 else:
                     self.inventory.add_item(drop)
+                    drop_messages.append(f"You picked up {drop.name}.")
+                    
+
             location.enemies.remove(target)
             self.monster_fight.end_battle()
             messages.append(self.status.add_score(target.score, reason=target.name))
+            for message in drop_messages:
+                messages.append(message)
 
         return '\n'.join(messages) + '\n' + self.get_display_text()
 

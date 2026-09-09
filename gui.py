@@ -28,7 +28,7 @@ class GUI():
                             ' DMG: ' + str(game.player.damage) + ' BLOCK: ' + str(game.player.block) +
                             '\n' +
                             str(game.get_current_location().story), size=(
-                100, 4), font='Any 12', key='-OUTPUT-')],
+                100, 10), font='Any 12', key='-OUTPUT-')],
             [command_col],
         ]
         return sg.Window('Adventure Game', layout, resizable=True)
