@@ -9,3 +9,16 @@ class Item:
 
         self.used = False
         self.equipped = False
+
+    def describe_effect(self):
+        """description of what this item does,
+        displays in the inventory list."""
+        parts = []
+        if self.heal:
+            parts.append(f"heals {self.heal} HP")
+        if self.damage:
+            parts.append(f"+{self.damage} attack")
+        if self.block:
+            parts.append(f"+{self.block} block")
+
+        return ', '.join(parts) if parts else "no effect"
