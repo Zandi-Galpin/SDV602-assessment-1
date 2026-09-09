@@ -91,5 +91,6 @@ def populate_enemies(locations):
             score=100,
             presence_text="A massive king goose blocks the path. 'Your journey ends here.' he says coldly. (currently not in right position or has right health. testing)",
             drops=[Item("crown"), Item("gold", amount=999)],
+            ambush=True
         )
     )

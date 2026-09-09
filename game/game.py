@@ -59,6 +59,11 @@ class Game:
         current_location: Location = self.get_current_location()
         destination = current_location.get_direction(direction)
 
+        ambush_message = self.check_for_ambush(destination)
+        if ambush_message:
+            self.current_location = self.locations[destination].name
+            return ambush_message + '\n' + self.get_display_text()
+        
         if direction == 'north' and current_location.locked:
             return current_location.locked_message + '\n' + \
                 current_location.get_full_story()
@@ -66,7 +71,8 @@ class Game:
         if destination:
             proposed_location: Location = self.locations[destination]
             return self.move(proposed_location)
-
+        
+        
         return 'You can not go that way.\n' + \
             self.get_display_text()
 
@@ -128,3 +134,24 @@ class Game:
             enemy = self.monster_fight.current_enemy
             return f"You are fighting {enemy.name} ({enemy.health} HP remaining)."
         return self.get_current_location().get_full_story()
+
+    def check_for_ambush(self, destination):
+        """Called after every successful move. If the new scene has a
+        ambush enemy, it attacks first, before the player can act.
+        """
+        if self.monster_fight.in_battle():
+            return None
+        location: Location = self.locations[destination]
+        for enemy in location.enemies:
+            if enemy.ambush:
+                self.monster_fight.start_battle(enemy)
+                damage_taken = max(enemy.damage - self.player.block, 0)
+                self.player.health_current = max(self.player.health_current - damage_taken, 0)
+
+                message = (f"{enemy.name} ambushes you, hitting you for "
+                           f"{damage_taken} damage!")
+                if not self.status.is_alive():
+                    message += "\nYou have been defeated..."
+                return message
+
+        return None
