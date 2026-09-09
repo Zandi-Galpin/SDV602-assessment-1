@@ -160,3 +160,15 @@ class Game:
                 return message
 
         return None
+
+    def get_inventory_summary(self) -> str:
+        if self.inventory.items:
+            item_lines = [
+                f"- {item.name}" + (" (equipped)" if item.equipped else "")
+                for item in self.inventory.items
+            ]
+            items_text = "Inventory:\n" + '\n'.join(item_lines)
+        else:
+            items_text = "Inventory: empty"
+
+        return f"{items_text}\nGold: {self.inventory.gold}\n" + self.get_display_text()

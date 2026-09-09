@@ -2,7 +2,7 @@ class CommandParser:
     #parses player input and put it through to the right game system.
     #it only knows four words and what valid direction is
 
-    VALID_WORDS = {'move', 'attack', 'equip', 'use'}
+    VALID_WORDS = {'move', 'attack', 'equip', 'use', 'inventory'}
     VALID_DIRECTIONS = {'north', 'south', 'east', 'west'}
 
     def __init__(self, game):
@@ -43,6 +43,8 @@ class CommandParser:
                 return self.handle_equip(target)
             case 'use':
                 return self.handle_use(target)
+            case 'inventory':
+                return self.game.get_inventory_summary()
 
     def handle_move(self, target: str) -> str:
         if target not in self.VALID_DIRECTIONS:
