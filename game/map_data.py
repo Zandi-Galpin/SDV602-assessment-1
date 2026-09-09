@@ -83,14 +83,38 @@ def build_corridor_locations():
 
 def populate_enemies(locations):
     """put enemies on their scenes. Called after the grid is built."""
-    locations["row3column2"].enemies.append(
+    locations["row6column1"].enemies.append(
         Enemy(
             name="king goose",
-            health=20,
+            health=200,
             damage=15,
             score=100,
-            presence_text="A massive king goose blocks the path. 'Your journey ends here.' he says coldly. (currently not in right position or has right health. testing)",
+            presence_text="A massive king goose blocks the path. 'Your journey ends here.' he says coldly.",
             drops=[Item("crown"), Item("gold", amount=999)],
             ambush=True
         )
     )
+
+    locations["row1column1"].enemies.append(
+            Enemy(
+                name="mouse",
+                health=5,
+                damage=1,
+                score=5,
+                presence_text="You see a mouse scuttering across the sand",
+                drops=[Item("cheese", heal=10), Item("gold", amount=5)],
+                ambush=False
+            )
+        )
+
+    locations["row1column5"].enemies.append(
+                Enemy(
+                    name="horseshoe crab",
+                    health=50,
+                    damage=5,
+                    score=20,
+                    presence_text="You see a mouse scuttering across the sand",
+                    drops=[Item("sashimi", heal=25), Item("crab shell", block=5), Item("gold", amount=15)],
+                    ambush=False
+                )
+            )

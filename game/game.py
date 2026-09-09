@@ -6,7 +6,7 @@ from game.monster_fight import MonsterFight
 from game.status import Status
 from game.special_interactions import SPECIAL_INTERACTIONS
 
-WIN_LOCATION = "row1column1"
+WIN_LOCATION = "row7column1"
 
 class Game:
     def __init__(self, player: Player):
