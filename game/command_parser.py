@@ -25,6 +25,8 @@ class CommandParser:
         if self.game.is_game_over():
             if word == 'restart':
                 return self.game.restart()
+            if self.game.won == True:
+                return("YOU WON!!!!!!!!! Type 'restart' to reset the game.")
             return ("You were defeated. Type 'restart' to try again.")
 
 

@@ -14,7 +14,7 @@ def key(row, column):
 #dictionary of descriptions for each scene to appear to the player in the default grid
 SCENE_TEXT = {
     (1, 1): "You are on a sandy beach. You see ocean to the south and a wall of rock to the west.",
-    (1, 2): "You are on a sandy beach. You see a ship floating in the water to the south. a pirate calls out from the deck.",
+    (1, 2): "You are on a sandy beach. You see a ship floating in the water to the south. A pirate calls out from the deck.",
     (1, 3): "You are on a sandy beach. You see ocean to the south.",
     (1, 4): "You are on a sandy beach. You see ocean to the south.",
     (1, 5): "You are on a sandy beach. You see ocean to the south and a wall of rock to the east.",

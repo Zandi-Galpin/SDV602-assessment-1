@@ -6,6 +6,8 @@ from game.monster_fight import MonsterFight
 from game.status import Status
 from game.special_interactions import SPECIAL_INTERACTIONS
 
+WIN_LOCATION = "row1column1"
+
 class Game:
     def __init__(self, player: Player):
         self.starting_player_stats = {
@@ -18,6 +20,7 @@ class Game:
 
     def setup_new_game(self):
         """build or rebuild the game stuff. Used by __init__ and restart()."""
+        self.won = False
         self.player.health_current = self.player.health_max
         self.player.damage = self.starting_player_stats['damage']
         self.player.block = self.starting_player_stats['block']
@@ -31,7 +34,7 @@ class Game:
         populate_enemies(self.locations)
 
     def is_game_over(self) -> bool:
-        return not self.status.is_alive()
+        return not self.status.is_alive() or self.won
 
     def restart(self) -> str:
         self.setup_new_game()
@@ -59,22 +62,23 @@ class Game:
         current_location: Location = self.get_current_location()
         destination = current_location.get_direction(direction)
 
-        ambush_message = self.check_for_ambush(destination)
-        if ambush_message:
-            self.current_location = self.locations[destination].name
-            return ambush_message + '\n' + self.get_display_text()
-        
-        if direction == 'north' and current_location.locked:
-            return current_location.locked_message + '\n' + \
-                current_location.get_full_story()
+        if not destination:
+            return 'You can not go that way.\n' + self.get_display_text()
 
-        if destination:
-            proposed_location: Location = self.locations[destination]
-            return self.move(proposed_location)
-        
-        
-        return 'You can not go that way.\n' + \
-            self.get_display_text()
+        if direction == 'north' and current_location.locked:
+            return current_location.locked_message + '\n' + self.get_display_text()
+
+        self.move(self.locations[destination])
+
+        if self.current_location == WIN_LOCATION:
+            self.won = True
+            return self.get_display_text()
+
+        ambush_message = self.check_for_ambush()
+        if ambush_message:
+            return ambush_message + '\n' + self.get_display_text()
+
+        return self.get_display_text()
 
     def handle_attack(self, enemy_name: str) -> str:
         location = self.get_current_location()
@@ -135,13 +139,14 @@ class Game:
             return f"You are fighting {enemy.name} ({enemy.health} HP remaining)."
         return self.get_current_location().get_full_story()
 
-    def check_for_ambush(self, destination):
+    def check_for_ambush(self):
         """Called after every successful move. If the new scene has a
         ambush enemy, it attacks first, before the player can act.
         """
         if self.monster_fight.in_battle():
             return None
-        location: Location = self.locations[destination]
+
+        location = self.get_current_location()
         for enemy in location.enemies:
             if enemy.ambush:
                 self.monster_fight.start_battle(enemy)
@@ -149,7 +154,7 @@ class Game:
                 self.player.health_current = max(self.player.health_current - damage_taken, 0)
 
                 message = (f"{enemy.name} ambushes you, hitting you for "
-                           f"{damage_taken} damage!")
+                        f"{damage_taken} damage!")
                 if not self.status.is_alive():
                     message += "\nYou have been defeated..."
                 return message
