@@ -90,7 +90,7 @@ def populate_enemies(locations):
             damage=15,
             score=100,
             presence_text="A massive king goose blocks the path. 'Your journey ends here.' he says coldly.",
-            drops=[Item("crown"), Item("gold", amount=999)],
+            drops=[Item("crown", block=20, damage=20), Item("gold", amount=999)],
             ambush=True
         )
     )
@@ -128,5 +128,17 @@ def populate_enemies(locations):
             presence_text="A creature with human legs and a fish body jumps out at you! It's a reverse mermaid!!!",
             drops=[Item("health potion", heal=100), Item("reverse sword", block=8, damage=5), Item("gold", amount=30)],
             ambush=True
+        )
+    )
+
+    locations["row4column5"].enemies.append(
+        Enemy(
+            name="dragon",
+            health=500,
+            damage=25,
+            score=1000,
+            presence_text="A massive dragon stares you down. 'YOU DARE CHALLENGE ME?'",
+            drops=[Item("gold", amount=99999)],
+            ambush=False
         )
     )
