@@ -113,7 +113,7 @@ def populate_enemies(locations):
                     health=50,
                     damage=5,
                     score=20,
-                    presence_text="You see a mouse scuttering across the sand",
+                    presence_text="You see a horseshoe crab, watching you menacingly",
                     drops=[Item("sashimi", heal=25), Item("crab shell", block=5), Item("gold", amount=15)],
                     ambush=False
                 )

@@ -15,6 +15,12 @@ class Inventory:
                 return item
         return None
 
+    def find_equipped_item(self):
+        for item in self.items:
+            if item.equipped:
+                return item
+        return None
+
     def has_item(self, item_name):
         return self.find_item(item_name) is not None
 
@@ -39,6 +45,9 @@ class Inventory:
         return False
 
     def equip_item(self, item_name, player):
+        """Only one item can be equipped at a time,
+        equipping something new  unequips the current one.
+        """
         item = self.find_item(item_name)
         if not item:
             return f"You don't have {item_name}.", None
@@ -49,10 +58,22 @@ class Inventory:
             player.block -= item.block
             return f"You unequipped {item.name}.", False
 
+        messages = []
+        previous = self.find_equipped_item()
+        if previous:
+            previous.equipped = False
+            player.damage -= previous.damage
+            player.block -= previous.block
+            messages.append(f"You unequipped {previous.name}.")
+
         item.equipped = True
         player.damage += item.damage
         player.block += item.block
-        return f"You equipped {item.name}, gaining {item.damage} attack damage and {item.block} block.", True
+        messages.append(
+            f"You equipped {item.name}, gaining {item.damage} attack damage and {item.block} block."
+        )
+
+        return ' '.join(messages), True
 
     def use_item(self, item_name, player):
         #Uses a consumable (healing or gold)

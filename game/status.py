@@ -12,11 +12,8 @@ class Status:
         self.score += amount
         return f"+{amount} score" + (f" ({reason})" if reason else "")
 
-    def record_equip(self, item_name, equipped):
-        if equipped:
-            self.equipped_items.add(item_name)
-        else:
-            self.equipped_items.discard(item_name)
+    def sync_equipped(self, inventory):
+        self.equipped_items = {item.name for item in inventory.items if item.equipped}
 
     def is_alive(self):
         return self.player.health_current > 0

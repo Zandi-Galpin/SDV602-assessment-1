@@ -114,7 +114,7 @@ class Game:
 
         message, now_equipped = self.inventory.equip_item(item_name, self.player)
         if now_equipped is not None:
-            self.status.record_equip(item_name, now_equipped)
+            self.status.sync_equipped(self.inventory)
 
         return message + '\n' + self.get_display_text()
 
