@@ -96,25 +96,37 @@ def populate_enemies(locations):
     )
 
     locations["row1column1"].enemies.append(
-            Enemy(
-                name="mouse",
-                health=5,
-                damage=1,
-                score=5,
-                presence_text="You see a mouse scuttering across the sand",
-                drops=[Item("cheese", heal=10), Item("gold", amount=5)],
-                ambush=False
-            )
+        Enemy(
+            name="mouse",
+            health=10,
+            damage=3,
+            score=5,
+            presence_text="You see a mouse scuttering across the sand",
+            drops=[Item("cheese", heal=10), Item("gold", amount=5)],
+            ambush=False
         )
+    )
 
     locations["row1column5"].enemies.append(
-                Enemy(
-                    name="horseshoe crab",
-                    health=50,
-                    damage=5,
-                    score=20,
-                    presence_text="You see a horseshoe crab, watching you menacingly",
-                    drops=[Item("sashimi", heal=25), Item("crab shell", block=5), Item("gold", amount=15)],
-                    ambush=False
-                )
-            )
+        Enemy(
+            name="horseshoe crab",
+            health=50,
+            damage=8,
+            score=20,
+            presence_text="You see a horseshoe crab, watching you menacingly",
+            drops=[Item("sashimi", heal=25), Item("crab shell", block=5), Item("gold", amount=15)],
+            ambush=False
+        )
+    )
+
+    locations["row4column4"].enemies.append(
+        Enemy(
+            name="reverse mermaid",
+            health=25,
+            damage=5,
+            score=10,
+            presence_text="A creature with human legs and a fish body jumps out at you! It's a reverse mermaid!!!",
+            drops=[Item("health potion", heal=100), Item("reverse sword", block=8, damage=5), Item("gold", amount=30)],
+            ambush=True
+        )
+    )

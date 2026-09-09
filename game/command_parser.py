@@ -1,3 +1,22 @@
+HELP_TEXT = """
+Available commands:
+
+move <direction>   - Move north, south, east or west. Not allowed during battle.
+                                    e.g. "move north"
+
+attack <enemy>      - Attack an enemy in the current scene. Starts a battle if not already in one. Ends your turn.
+                                    e.g. "attack goblin"
+
+equip <item>           - Equip an item from your inventory (only one item can be equipped at a time). Not allowed during battle.
+                                    e.g. "equip sword"
+
+use <item>              - Use a consumable or trigger a special interaction. Allowed during battle and does not end turn.
+                                    e.g. "use health potion"
+
+inventory                  - Lists everything you're carrying, what they do, and how much gold you have.
+"""
+
+
 class CommandParser:
     #parses player input and put it through to the right game system.
     #it only knows four words and what valid direction is
@@ -21,6 +40,9 @@ class CommandParser:
         #Returns a message to display to the player.
         
         word, target = self.parse(raw_input)
+
+        if word == 'help':
+            return HELP_TEXT
 
         if self.game.is_game_over():
             if word == 'restart':
