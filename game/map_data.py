@@ -119,11 +119,11 @@ def populate_enemies(locations):
         )
     )
 
-    locations["row4column4"].enemies.append(
+    locations["row3column3"].enemies.append(
         Enemy(
             name="reverse mermaid",
             health=25,
-            damage=5,
+            damage=8,
             score=10,
             presence_text="A creature with human legs and a fish body jumps out at you! It's a reverse mermaid!!!",
             drops=[Item("health potion", heal=100), Item("reverse sword", block=8, damage=5), Item("gold", amount=30)],
